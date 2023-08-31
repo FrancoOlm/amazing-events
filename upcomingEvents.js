@@ -1,7 +1,5 @@
-let cardsContainer = document.getElementById('cardsContainer')
 let upcomingEventesContainer = document.getElementById('upcomingEvents')
 let arrayEventos = data.events
-
 
 const upcomingEvents = []
 
@@ -23,14 +21,12 @@ function generarCards(parametro, contenedor){
         <img src=${dato.image} class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${dato.name}</h5>
-            <p class="card-text carDescription">${dato.description}</p>
-            <p class="card-text">$${dato.price}</p>
-            <div class="btndContainer">
-                <a href="./pages/detail.html" class="btn btn-primary btn-detail">Details</a>
-            </div>
+            <p class="card-text">${dato.description}</p>
+            <p class="card-text">${dato.price}</p>
+            <a href="./pages/detail.html" class="btn btn-primary">Details</a>
         </div>
     </div>`
     } 
     contenedor.innerHTML = iterados
 }
-generarCards(arrayEventos , cardsContainer)
+generarCards(upcomingEvents , upcomingEventesContainer)

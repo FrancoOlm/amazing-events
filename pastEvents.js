@@ -1,16 +1,14 @@
-let cardsContainer = document.getElementById('cardsContainer')
-let upcomingEventesContainer = document.getElementById('upcomingEvents')
+let pastEventsContainer = document.getElementById('pastEvents')
 let arrayEventos = data.events
 
-
-const upcomingEvents = []
+const pastEvents = []
 
 function filtrado(){
     const currentDate = new Date(data.currentDate) /* Transforma string a fecha */
     for( let iterador of arrayEventos){
         const eventDate = new Date(iterador.date); /* Transforma string a fecha */
-        if(eventDate > currentDate){
-            upcomingEvents.push(iterador)
+        if(eventDate < currentDate){
+            pastEvents.push(iterador)
         }
     }
 }
@@ -24,13 +22,11 @@ function generarCards(parametro, contenedor){
         <div class="card-body">
             <h5 class="card-title">${dato.name}</h5>
             <p class="card-text carDescription">${dato.description}</p>
-            <p class="card-text">$${dato.price}</p>
-            <div class="btndContainer">
-                <a href="./pages/detail.html" class="btn btn-primary btn-detail">Details</a>
-            </div>
+            <p class="card-text">${dato.price}</p>
+            <a href="./pages/detail.html" class="btn btn-primary">Details</a>
         </div>
     </div>`
     } 
     contenedor.innerHTML = iterados
 }
-generarCards(arrayEventos , cardsContainer)
+generarCards(pastEvents , pastEventsContainer)

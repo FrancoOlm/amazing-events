@@ -5,9 +5,15 @@
 }
 
 body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     /* background-color: rgba(0, 0, 0, 0.7 ); */
     background: rgb(109,33,101);
     background: linear-gradient(94deg, rgba(109,33,101,1) 6%, rgba(168,43,173,1) 49%, rgba(126,26,204,1) 85%);
+}
+main{
+    margin-bottom: 20px;
 }
 .navbar-expand-lg{
     background: linear-gradient(94deg, rgba(109,33,101,1) 6%, rgba(168,43,173,1) 49%, rgba(126,26,204,1) 85%);
@@ -41,6 +47,10 @@ footer{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: auto;
+
+    border-top: solid 3px;
+    background-color: rgb(211, 198, 140);
 }
 footer div img{
     width: 40px;
@@ -113,9 +123,17 @@ td{
     border-radius: 20px;
     padding: 20px;
 }
+.card-img-top{
+    height: 200px;
+    object-fit: cover;
+}
 
-footer{
-    margin-top: 40px;
-    border-top: solid 3px;
-    background-color: rgb(211, 198, 140);
+.carDescription{
+    height: 100px;
+}
+.btndContainer{
+text-align: center;
+}
+.btndContainer a{
+    width: 200px;
 }
