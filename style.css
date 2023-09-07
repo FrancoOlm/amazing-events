@@ -26,12 +26,16 @@ main{
 }
 
 .carousel-inner{
-    max-height: 300px;
+    max-height: 400px;
+}
+.carousel-caption h5{
+    display: inline-block;
+    font-weight: 600  ;
 }
 
 .carousel-item {
     max-width: 100%;
-    height: 500px;
+    height: 400px;
 }
 .carousel-item img{
     width: 100%;
@@ -61,17 +65,28 @@ footer div img{
 .search{
     border: none;
 }
+.btn-outline-success{
+    display: none;
+}
 
 .formulario{
     margin: 0 auto;
+}
+.form-check-label{
+    color: rgb(255, 255, 255);
+}
+.form-check-input:hover{
+    transition: 0.2s;
+    cursor:pointer;
+    transform: scale(1.2);
 }
 
 article{
     width: 900px;
     /* background-color: #fff; */
     margin: 0 auto;
-    /* border: solid #636363 2px; */
-    /* border-radius: 20px; */
+/*     border: solid #f1f1f1 2px;
+    border-radius: 20px;  */
 }
 
 /* tabla */
@@ -94,8 +109,10 @@ td{
     height: 80vh;
 }
 .detailContainer img{
-    width: 450px;
+    width: 550px;
+    height: 350px;
     border-radius: 10px;
+    object-fit: cover;
 }
 .tarjetaDetail{
     height: 350px;
@@ -105,11 +122,15 @@ td{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 300px;
-    height: 300px;
+    width: 380px;
+    height: 350px;
     border: solid black;
     border-radius: 10px;
 
+}
+.textDetailContainer p {
+    width: 300px;
+    text-align: center;
 }
 
 .boxTextImg{
@@ -118,7 +139,7 @@ td{
     align-items: center;
     height: 400px;
     gap: 20px;
-    background-color: #fff;
+    background-color: #edf3ef;
     border: solid black;
     border-radius: 20px;
     padding: 20px;
