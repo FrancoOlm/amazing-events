@@ -4,8 +4,35 @@ let checkboxContainer = document.getElementById('checkboxContainer')
 const submitBtn = document.getElementById('submit')
 const searchInput = document.getElementById('searchInput')
 let arrayEventos = data.events
+const dataEvents =  "https://mindhub-xj03.onrender.com/api/amazing"
 
-function generarDetail(parametro, contenedor) {
+/*     async function accederApi(){
+    try{
+        const respuesta = await fetch(dataEvents)
+        const datos = await respuesta.json()
+        const eventos= datos.events
+        console.log(eventos)
+        return eventos;
+    }
+    catch(error){
+        console.log(error)
+    }
+
+}
+console.log(accederApi()) */
+function accederDatos(){
+    fetch(dataEvents)
+    .then(respuesta => respuesta.json())
+    .then( datos => {
+        let datosResueltos = datos.events
+        generarDetail(datosResueltos, cardsContainer)
+    })
+    .catch(error => console.log(error))
+    
+}
+accederDatos()
+
+    function generarDetail(parametro, contenedor) {
     let iterados = ""
     for (let dato of parametro) {
         iterados += `<div class="card" style="width: 18rem;">
@@ -22,7 +49,7 @@ function generarDetail(parametro, contenedor) {
     }
     contenedor.innerHTML = iterados
 }
-generarDetail(arrayEventos, cardsContainer)
+
 
 let arrayCategoriasFiltradas = [...new Set(arrayEventos.map(objeto => objeto.category))]
 
