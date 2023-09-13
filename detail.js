@@ -1,9 +1,18 @@
-
 let detailContainer = document.getElementById('detailContainer')
-const objetoURL = new URLSearchParams(location.search)
-const valorParametro= objetoURL.get('id')
-let arrayEventos = data.events
-let idEventos = arrayEventos.find(objeto => objeto._id === valorParametro)
+const dataEvents = "https://mindhub-xj03.onrender.com/api/amazing"
+fetch(dataEvents)
+.then(respuesta => respuesta.json())
+.then(datos =>{
+    let datosApi = datos.events
+
+    const objetoURL = new URLSearchParams(location.search)
+    const valorParametro= objetoURL.get('id')
+    let idEventos = datosApi.find(objeto => objeto._id == valorParametro)
+
+    renderCard(detailContainer, idEventos)
+
+})
+.catch(error => console.log(error))
 
 function generarDetail(objeto) {
     let iterados = ""
@@ -27,4 +36,3 @@ function generarDetail(objeto) {
 function renderCard(contenedor,objeto){
     contenedor.innerHTML = generarDetail(objeto)
 }
-renderCard(detailContainer, idEventos)

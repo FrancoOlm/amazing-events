@@ -1,38 +1,46 @@
 let cardsContainer = document.getElementById('cardsContainer')
 let upcomingEventesContainer = document.getElementById('upcomingEvents')
 let checkboxContainer = document.getElementById('checkboxContainer')
-const submitBtn = document.getElementById('submit')
 const searchInput = document.getElementById('searchInput')
-let arrayEventos = data.events
-const dataEvents =  "https://mindhub-xj03.onrender.com/api/amazing"
 
-/*     async function accederApi(){
-    try{
-        const respuesta = await fetch(dataEvents)
-        const datos = await respuesta.json()
-        const eventos= datos.events
-        console.log(eventos)
-        return eventos;
-    }
-    catch(error){
-        console.log(error)
-    }
+const dataEvents = "https://mindhub-xj03.onrender.com/api/amazing"
 
-}
-console.log(accederApi()) */
-function accederDatos(){
-    fetch(dataEvents)
+fetch(dataEvents)
     .then(respuesta => respuesta.json())
-    .then( datos => {
+    .then(datos => {
         let datosResueltos = datos.events
         generarDetail(datosResueltos, cardsContainer)
+
+        let arrayCategoriasFiltradas = [...new Set(datosResueltos.map(objeto => objeto.category))]
+        checkGenerator(arrayCategoriasFiltradas, checkboxContainer)
+
+        /* evento change de checkbox */
+        checkboxContainer.addEventListener('change', () => {
+            let returnFiltroDoble = filtroDoble(datosResueltos, searchInput)
+
+            generarDetail(returnFiltroDoble, cardsContainer)
+
+            if (returnFiltroDoble == "") {
+                generarDetail(datosResueltos, cardsContainer)
+            }
+        })
+        /* evento change de checkbox */
+
+        /* evento keyup de input */
+        searchInput.addEventListener('keyup', () => {
+            let returnFiltroDoble = filtroDoble(datosResueltos, searchInput)
+            if (returnFiltroDoble != 0) {
+                generarDetail(returnFiltroDoble, cardsContainer)
+            } else {
+                return cardsContainer.innerHTML = `<h3 class="noResultados">No hay resultados para tu busqueda ☹</h3>`;
+            }
+        })
+        /* evento keyup de input */
+
     })
     .catch(error => console.log(error))
-    
-}
-accederDatos()
 
-    function generarDetail(parametro, contenedor) {
+function generarDetail(parametro, contenedor) {
     let iterados = ""
     for (let dato of parametro) {
         iterados += `<div class="card" style="width: 18rem;">
@@ -40,7 +48,7 @@ accederDatos()
         <div class="card-body">
             <h5 class="card-title">${dato.name}</h5>
             <p class="card-text carDescription">${dato.description}</p>
-            <p class="card-text">$${dato.price}</p>
+            <p class="card-text price">$${dato.price}</p>
             <div class="btndContainer">
                 <a href="./pages/detail.html?id=${dato._id}" class="btn btn-primary btn-detail">Details</a>
             </div>
@@ -49,9 +57,6 @@ accederDatos()
     }
     contenedor.innerHTML = iterados
 }
-
-
-let arrayCategoriasFiltradas = [...new Set(arrayEventos.map(objeto => objeto.category))]
 
 function checkBox(caregoria) {
     let checks = ""
@@ -70,44 +75,23 @@ function checkGenerator(array, contenedor) {
     });
     contenedor.innerHTML = imprimirCheck
 }
-checkGenerator(arrayCategoriasFiltradas, checkboxContainer)
 
-function filtrarPorChecks() {
+function filtrarPorChecks(api) {
     let nodeListChecked = document.querySelectorAll("input[type='checkbox']:checked")
     let inputValues = Array.from(nodeListChecked).map(check => check.value)
 
     if (inputValues.length > 0) {
-        let objetosFiltradosCheck = arrayEventos.filter(objeto => inputValues.includes(objeto.category))
+        let objetosFiltradosCheck = api.filter(objeto => inputValues.includes(objeto.category))
         return objetosFiltradosCheck
     } else {
-        return arrayEventos
+        return api
     }
 }
-/* evento change de checkbox */
-checkboxContainer.addEventListener('change', () => {
-    let returnFiltroDoble = filtroDoble(arrayEventos, searchInput)
-    generarDetail(returnFiltroDoble, cardsContainer)
-
-    if (returnFiltroDoble == "") {
-        generarDetail(arrayEventos, cardsContainer)
-    }
-})
-/* evento change de checkbox */
 
 function filtrarInput(array, input) {
     let objetosFiltrados = array.filter(objeto => objeto.name.toLowerCase().includes(input.value.toLowerCase()))
     return objetosFiltrados
 }
-/* evento keyup de input */
-searchInput.addEventListener('keyup', (e) => {
-    let returnFiltroDoble = filtroDoble(arrayEventos, searchInput)
-    if (returnFiltroDoble !=0) {
-        generarDetail(returnFiltroDoble, cardsContainer)
-    }else{
-        return cardsContainer.innerHTML = `<h3 class="noResultados">No hay resultados para tu busqueda ☹</h3>`;
-    }
-})
-/* evento keyup de input */
 
 function filtroDoble(array, input) {
     let arrayChecksFiltrados = filtrarPorChecks(array)

@@ -1,20 +1,56 @@
 let upcomingEventesContainer = document.getElementById('upcomingEvents')
 let checkboxContainer = document.getElementById('checkboxContainer')
 let searchInput = document.getElementById('searchInput')
-let arrayEventos = data.events
-
+const dataEvents = "https://mindhub-xj03.onrender.com/api/amazing"
 const upcomingEvents = []
 
-function filtrado(){
-    const currentDate = new Date(data.currentDate) /* Transforma string a fecha */
-    for( let iterador of arrayEventos){
-        const eventDate = new Date(iterador.date); /* Transforma string a fecha */
-        if(eventDate > currentDate){
-            upcomingEvents.push(iterador)
+fetch(dataEvents)
+.then(respuesa => respuesa.json())
+.then(datos =>{
+    let fechaACtual = datos.currentDate
+    let datosApi = datos.events
+
+    
+    function filtrado(){
+        const currentDatee = new Date(fechaACtual) /* Transforma string a fecha */
+        for( let iterador of datosApi){
+            const eventDate = new Date(iterador.date); /* Transforma string a fecha */
+            if(eventDate > currentDatee){
+                upcomingEvents.push(iterador)
+            }
         }
     }
-}
-filtrado()
+    filtrado()
+
+    generarCards(upcomingEvents , upcomingEventesContainer)
+
+    let arrayCategoriasFiltradas = [...new Set(upcomingEvents.map(objeto => objeto.category))]
+    checkGenerator(arrayCategoriasFiltradas, checkboxContainer)
+
+/* evento change de checkbox */
+checkboxContainer.addEventListener('change', () => {
+    let returnFiltroDoble = filtroDoble(upcomingEvents, searchInput)
+    generarCards(returnFiltroDoble, upcomingEventesContainer)
+
+    if (returnFiltroDoble == "") {
+        generarCards(upcomingEvents, upcomingEventesContainer)
+    }
+})
+/* evento change de checkbox */
+
+/* evento keyup de input */
+searchInput.addEventListener('keyup', (e) => {
+    let returnFiltroDoble = filtroDoble(upcomingEvents, searchInput)
+    if (returnFiltroDoble !=0) {
+        generarCards(returnFiltroDoble, upcomingEventesContainer)
+    }else{
+        return upcomingEventesContainer.innerHTML = `<h3 class="noResultados">No hay resultados para tu busqueda ☹</h3>`;
+    }
+})
+/* evento keyup de input */
+
+})
+.catch(error => console.log(error))
 
 function generarCards(parametro, contenedor){
     let iterados = ""
@@ -33,9 +69,7 @@ function generarCards(parametro, contenedor){
     } 
     contenedor.innerHTML = iterados
 }
-generarCards(upcomingEvents , upcomingEventesContainer)
 
-let arrayCategoriasFiltradas = [...new Set(upcomingEvents.map(objeto => objeto.category))]
 function checkBox(caregoria) {
     let checks = ""
     checks = `
@@ -53,7 +87,6 @@ function checkGenerator(array, contenedor) {
     });
     contenedor.innerHTML = imprimirCheck
 }
-checkGenerator(arrayCategoriasFiltradas, checkboxContainer)
 
 function filtrarPorChecks() {
     let nodeListChecked = document.querySelectorAll("input[type='checkbox']:checked")
@@ -67,31 +100,10 @@ function filtrarPorChecks() {
     }
 }
 
-/* evento change de checkbox */
-checkboxContainer.addEventListener('change', () => {
-    let returnFiltroDoble = filtroDoble(upcomingEvents, searchInput)
-    generarCards(returnFiltroDoble, upcomingEventesContainer)
-
-    if (returnFiltroDoble == "") {
-        generarCards(upcomingEvents, upcomingEventesContainer)
-    }
-})
-/* evento change de checkbox */
-
 function filtrarInput(array, input) {
     let objetosFiltrados = array.filter(objeto => objeto.name.toLowerCase().includes(input.value.toLowerCase()))
     return objetosFiltrados
 }
-/* evento keyup de input */
-searchInput.addEventListener('keyup', (e) => {
-    let returnFiltroDoble = filtroDoble(upcomingEvents, searchInput)
-    if (returnFiltroDoble !=0) {
-        generarCards(returnFiltroDoble, upcomingEventesContainer)
-    }else{
-        return upcomingEventesContainer.innerHTML = `<h3 class="noResultados">No hay resultados para tu busqueda ☹</h3>`;
-    }
-})
-/* evento keyup de input */
 
 function filtroDoble(array, input) {
     let arrayChecksFiltrados = filtrarPorChecks(array)
